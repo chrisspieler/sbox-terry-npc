@@ -24,7 +24,15 @@ public partial class Terry : AnimatedEntity
 		Outfit.DressEntity(this);
 	}
 
-	[GameEvent.Tick.Server]
+    public override void ClientSpawn()
+    {
+        base.ClientSpawn();
+
+		// This is a hack to make the spawn menu reload the tools list.
+		Game.RootPanel.ChildrenOfType<SpawnMenu>().First().OnHotloaded();
+    }
+
+    [GameEvent.Tick.Server]
 	protected void OnServerTick()
 	{
 		Animate();
