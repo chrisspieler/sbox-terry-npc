@@ -1,0 +1,36 @@
+{
+  "Title": "Terry",
+  "Type": "addon",
+  "Org": "duccsoft",
+  "Ident": "terry_npc",
+  "Tags": "runtime npc",
+  "Schema": 1,
+  "HasAssets": true,
+  "AssetsPath": "",
+  "Resources": null,
+  "MenuResources": null,
+  "HasCode": true,
+  "CodePath": "/code/",
+  "PackageReferences": [],
+  "EditorReferences": null,
+  "Metadata": {
+    "CsProjName": "",
+    "PrimaryAsset": "TerryNpc.Terry",
+    "PhysicsMins": "-1,-1,-1",
+    "PhysicsMaxs": "1,1,1",
+    "RenderMins": "-1,-1,-1",
+    "RenderMaxs": "-1,-1,-1",
+    "Compiler": {
+      "RootNamespace": "TerryNpc",
+      "DefineConstants": "SANDBOX;ADDON;DEBUG",
+      "NoWarn": "1701;1702;1591;",
+      "References": [],
+      "DistinctReferences": []
+    },
+    "ParentPackage": "facepunch.sandbox",
+    "Summary": "A randomly dressed sausage person. ",
+    "Description": "",
+    "Public": true,
+    "ReplaceTags": "runtime npc terry citizen"
+  }
+}
