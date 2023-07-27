@@ -39,8 +39,7 @@ public partial class Terry : AnimatedEntity
     {
         base.ClientSpawn();
 
-		// This is a hack to make the spawn menu reload the tools list.
-		Game.RootPanel.ChildrenOfType<SpawnMenu>().First().OnHotloaded();
+		SandboxHelper.RefreshToolsList();
     }
 
     [GameEvent.Tick.Server]
