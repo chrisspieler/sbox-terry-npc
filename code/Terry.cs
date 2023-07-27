@@ -6,8 +6,14 @@ namespace TerryNpc;
 
 public partial class Terry : AnimatedEntity
 {
+	[BindComponent]
+	public Mover Mover { get; }
+	[BindComponent]
+	public Navigator Navigator { get; }
+
 	public ClothingContainer Outfit { get; private set; }
-	public override void Spawn()
+
+    public override void Spawn()
 	{
 		base.Spawn();
 
@@ -16,9 +22,14 @@ public partial class Terry : AnimatedEntity
 		SetModel("models/citizen/citizen.vmdl");
 		SetupPhysicsFromModel(PhysicsMotionType.Keyframed);
 
-		EnableHitboxes = true;
+        Components.Add(new Gravity());
+        var target = Game.Clients.First(c => c.Pawn != null).Pawn as Entity;
+        Components.Add(new Navigator() { Target = target });
+        Components.Add(new Unstucker());
 
-		Health = 100;
+        EnableHitboxes = true;
+
+		Health = 15;
 
 		Outfit = RandomOutfit.Generate();
 		Outfit.DressEntity(this);
@@ -36,6 +47,12 @@ public partial class Terry : AnimatedEntity
 	protected void OnServerTick()
 	{
 		Animate();
+
+		if (Navigator.Target != null)
+		{
+			LookAtPoint = Navigator.Target.Position;
+			return;
+		}
 
 		var nearestPlayer = FindNearestPerson(100f, true);
 		if (nearestPlayer.IsValid())
@@ -57,7 +74,12 @@ public partial class Terry : AnimatedEntity
 
 		LastAttacker = info.Attacker;
 		LastAttackerWeapon = info.Weapon;
-		if (Game.IsServer && Health > 0f && LifeState == LifeState.Alive)
+		// Headshots are fatal
+        if (info.Hitbox.HasAnyTags("head"))
+        {
+            info.Damage *= 10.0f;
+        }
+        if (Game.IsServer && Health > 0f && LifeState == LifeState.Alive)
 		{
 			Health -= info.Damage;
 			if (Health <= 0f)
@@ -69,10 +91,7 @@ public partial class Terry : AnimatedEntity
 
 		this.ProceduralHitReaction(info);
 
-		if (info.Hitbox.HasTag("head"))
-		{
-			info.Damage *= 10.0f;
-		}
+
 
 		lastDamage = info;
 	}

@@ -82,21 +82,16 @@ public static class RandomOutfit
 
     private static Clothing GetRandomSkin(bool mayBeShirtless)
     {
-
-        var zombie = new[] { "Zombie", "Zombie 2" };
-        var skeleton = new[] { "Skeleton", "Skeleton Clean" };
         var muscley = new[] { "Muscley", "Muscley 2", "Muscley 3" };
 
         var excludedSkins = new List<string>();
-        if (Game.Random.NextSingle() <= ZombiePercent)
-            excludedSkins.AddRange(zombie);
-        if (Game.Random.NextSingle() <= SkeletonPercent)
-            excludedSkins.AddRange(skeleton);
+
         if (!mayBeShirtless)
             excludedSkins.AddRange(muscley);
 
         return GetRandomClothing(
-            c => c.Category == Clothing.ClothingCategory.Skin,
+            c => c.Category == Clothing.ClothingCategory.Skin
+                && !c.Title.ToLower().Contains("zombie") && !c.Title.ToLower().Contains("skeleton"),
             exclude: excludedSkins.ToArray()
             );
     }

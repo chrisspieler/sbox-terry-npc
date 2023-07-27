@@ -37,7 +37,7 @@ public class DripDropper : BaseTool
         var dir = Owner.EyeRotation.Forward;
 
         return Trace.Ray(startPos, startPos + (dir * MaxTraceDistance))
-            .WithAnyTags("player", "npc")
+            .WithAnyTags("player", "npc", "ragdoll")
             .Ignore(Owner)
             .Run();
     }
