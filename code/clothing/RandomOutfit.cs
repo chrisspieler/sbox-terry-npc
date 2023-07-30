@@ -60,7 +60,7 @@ public static class RandomOutfit
     {
         return GetRandomClothing(
                 c => c.Category == Clothing.ClothingCategory.Tops
-                && (shirt != null && c.CanBeWornWith(shirt))
+                && shirt != null && c.CanBeWornWith(shirt)
                 && c.SubCategory != "Vests",
                 exclude: new[] { "Army Vest" }
                 );

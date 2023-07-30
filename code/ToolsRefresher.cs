@@ -3,11 +3,18 @@ using System.Linq;
 
 namespace TerryNpc;
 
-/// <summary>
-/// Contains utility functions that require knowledge of the Sandbox game.
-/// </summary>
-public static class SandboxHelper
+public partial class ToolsRefresher : Entity
 {
+    public override void Spawn()
+    {
+        base.Spawn();
+
+        // Refresh the tools list on all clients.
+        RefreshToolsList();
+        _ = DeleteAsync(Time.Delta);
+    }
+
+    [ClientRpc]
     public static void RefreshToolsList()
     {
         var spawnMenu = Game.RootPanel?.ChildrenOfType<SpawnMenu>()?.FirstOrDefault();

@@ -12,6 +12,11 @@ public partial class Terry : AnimatedEntity
 	public Navigator Navigator { get; }
 
 	public ClothingContainer Outfit { get; private set; }
+	protected static List<string> SpawnSounds { get; set; } = new()
+	{
+
+	};
+	protected static int CurrentVoiceLineIndex { get; set; } = 0;
 
     public override void Spawn()
 	{
@@ -33,14 +38,20 @@ public partial class Terry : AnimatedEntity
 
 		Outfit = RandomOutfit.Generate();
 		Outfit.DressEntity(this);
+
+		if (SpawnSounds.Any())
+		{
+            var voiceLine = SpawnSounds[CurrentVoiceLineIndex];
+            CurrentVoiceLineIndex++;
+			// Cycle through the list of spawn sounds.
+            CurrentVoiceLineIndex %= SpawnSounds.Count;
+
+            var snd = PlaySound(voiceLine);
+            snd.SetVolume(0.6f);
+        }
+
+		_ = new ToolsRefresher();
 	}
-
-    public override void ClientSpawn()
-    {
-        base.ClientSpawn();
-
-		SandboxHelper.RefreshToolsList();
-    }
 
     [GameEvent.Tick.Server]
 	protected void OnServerTick()
